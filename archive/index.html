@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skribbl - Standalone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 0 0% 0%;
+            --card: 0 0% 100%;
+            --card-foreground: 240 6.67% 2.94%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 240 10% 3.92%;
+            --primary: 240 5.88% 10%;
+            --primary-foreground: 0 0% 100%;
+            --secondary: 240 4.76% 95.88%;
+            --secondary-foreground: 240 5.88% 10%;
+            --muted: 240 4.76% 95.88%;
+            --muted-foreground: 240 3.83% 46.08%;
+            --accent: 240 4.76% 95.88%;
+            --accent-foreground: 240 5.88% 10%;
+            --destructive: 0 72% 50.98%;
+            --destructive-foreground: 0 0% 98.04%;
+            --border: 240 5.88% 90%;
+            --input: 268.24 42.5% 84.31%;
+            --ring: 240 5.03% 64.9%;
+        }
+
+        .dark {
+            --background: 240 10% 3.92%;
+            --foreground: 0 0% 98.04%;
+            --card: 240 30.36% 43.92%;
+            --card-foreground: 0 0% 98.04%;
+            --popover: 240 10% 3.92%;
+            --popover-foreground: 0 0% 98.04%;
+            --primary: 0 0% 98.04%;
+            --primary-foreground: 240 5.88% 10%;
+            --secondary: 240 2.44% 16.08%;
+            --secondary-foreground: 0 0% 98.04%;
+            --muted: 240 4.69% 25.1%;
+            --muted-foreground: 240 5.03% 64.9%;
+            --accent: 240 3.7% 15.88%;
+            --accent-foreground: 0 0% 98.04%;
+            --destructive: 0 62.03% 30.98%;
+            --destructive-foreground: 0 0% 98.04%;
+            --border: 240 3.7% 15.88%;
+            --input: 240 3.7% 15.88%;
+            --ring: 240 4.88% 83.92%;
+        }
+
+        body {
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .active-tool {
+            background-color: hsl(var(--muted));
+        }
+        .active-color {
+            ring: 2px;
+            ring-color: hsl(var(--ring));
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <nav class="flex justify-between items-center w-full relative">
+            <div class="absolute top-4 left-4 group">
+                <button class="bg-secondary p-2 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
+                <div class="absolute hidden group-focus-within:block bg-popover text-popover-foreground border rounded-md shadow-lg mt-1 p-1 min-w-[150px]">
+                    <div class="px-2 py-1.5 text-sm font-semibold"><a href="https://shivamvijaywargi.dev" target="_blank">Shivam Vijaywargi</a></div>
+                    <div class="my-1 h-px bg-muted"></div>
+                    <div class="text-sm">
+                        <div class="font-semibold px-2 py-1.5">Toggle Theme</div>
+                        <button id="theme-light" class="w-full text-left px-2 py-1.5 hover:bg-accent rounded-sm">Light</button>
+                        <button id="theme-dark" class="w-full text-left px-2 py-1.5 hover:bg-accent rounded-sm">Dark</button>
+                        <button id="theme-system" class="w-full text-left px-2 py-1.5 hover:bg-accent rounded-sm">System</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid place-items-center w-full">
+                <div id="main-menu" class="max-sm:left-20 absolute top-4 flex justify-center items-center gap-1 shadow-md border dark:bg-secondary px-1.5 py-1 rounded-xl flex-wrap">
+                    <button data-tool="PENCIL" class="tool-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Pencil">✏️</button>
+                    <button data-tool="ERASER" class="tool-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Eraser">🧼</button>
+                    <button data-tool="RECTANGLE" class="tool-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Rectangle">⬜</button>
+                    <button data-tool="DIAMOND" class="tool-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Diamond">💎</button>
+                    <button data-tool="ELLIPSE" class="tool-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Ellipse">⚪</button>
+                    <button data-tool="LINE" class="tool-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Line">➖</button>
+                    
+                    <div class="bg-gray-200 dark:bg-gray-700 h-[35px] w-[1px] mx-1"></div>
+
+                    <button data-action="UNDO" class="action-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Undo">↩️</button>
+                    <button data-action="REDO" class="action-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Redo">↪️</button>
+                    <button data-action="CLEAR" class="action-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Clear">🗑️</button>
+                    <button data-action="DOWNLOAD" class="action-btn hover:bg-muted p-2 rounded transition cursor-pointer" title="Download">💾</button>
+                </div>
+            </div>
+        </nav>
+
+        <div id="toolbar" class="max-sm:top-24 dark:bg-secondary p-3 ml-4 mt-8 rounded-xl space-y-4 border shadow max-w-48 absolute top-12">
+            <div>
+                <h3 class="text-sm mb-1">Stroke Color</h3>
+                <div id="color-palette" class="flex flex-wrap gap-2">
+                    <div data-color="red" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: red;" title="red"></div>
+                    <div data-color="orange" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: orange;" title="orange"></div>
+                    <div data-color="yellow" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: yellow;" title="yellow"></div>
+                    <div data-color="green" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: green;" title="green"></div>
+                    <div data-color="blue" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: blue;" title="blue"></div>
+                    <div data-color="indigo" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: indigo;" title="indigo"></div>
+                    <div data-color="violet" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: violet;" title="violet"></div>
+                    <div data-color="white" class="h-4 w-4 cursor-pointer hover:ring rounded ring" style="background-color: white;" title="white"></div>
+                    <div data-color="black" class="h-4 w-4 cursor-pointer hover:ring rounded" style="background-color: black;" title="black"></div>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-sm">Stroke Width</h3>
+                <input id="width-slider" type="range" min="1" max="10" step="1" value="3" class="p-0 w-full">
+            </div>
+        </div>
+
+        <canvas id="canvas-board"></canvas>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('canvas-board');
+            const ctx = canvas.getContext('2d');
+
+            const state = {
+                activeTool: 'PENCIL',
+                tools: {
+                    PENCIL: { color: 'white', size: 3 },
+                    ERASER: { color: '#262626', size: 3 }, // Darker for dark mode visibility
+                    RECTANGLE: { color: 'white', size: 3 },
+                    DIAMOND: { color: 'white', size: 3 },
+                    ELLIPSE: { color: 'white', size: 3 },
+                    LINE: { color: 'white', size: 3 },
+                },
+                shouldDraw: false,
+                startX: 0,
+                startY: 0,
+                canvasHistory: [],
+                historyPosition: -1,
+                currentTheme: 'dark',
+            };
+
+            // --- DOM Elements ---
+            const toolButtons = document.querySelectorAll('.tool-btn');
+            const actionButtons = document.querySelectorAll('.action-btn');
+            const colorPalette = document.getElementById('color-palette');
+            const widthSlider = document.getElementById('width-slider');
+            const lightThemeBtn = document.getElementById('theme-light');
+            const darkThemeBtn = document.getElementById('theme-dark');
+            const systemThemeBtn = document.getElementById('theme-system');
+
+            // --- Canvas Initialization ---
+            const initializeCanvas = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                ctx.fillStyle = state.currentTheme === 'dark' ? '#262626' : '#fff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                saveState();
+            };
+
+            const saveState = () => {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                // If we are not at the end of history, slice it
+                if (state.historyPosition < state.canvasHistory.length - 1) {
+                    state.canvasHistory = state.canvasHistory.slice(0, state.historyPosition + 1);
+                }
+                state.canvasHistory.push(imageData);
+                state.historyPosition = state.canvasHistory.length - 1;
+            };
+
+            const restoreState = () => {
+                if (state.historyPosition >= 0 && state.historyPosition < state.canvasHistory.length) {
+                    ctx.putImageData(state.canvasHistory[state.historyPosition], 0, 0);
+                }
+            };
+            
+            // --- Drawing Logic ---
+            const getMousePos = (event) => {
+                const rect = canvas.getBoundingClientRect();
+                if (event.touches && event.touches[0]) {
+                    return {
+                        x: event.touches[0].clientX - rect.left,
+                        y: event.touches[0].clientY - rect.top
+                    };
+                }
+                return {
+                    x: event.clientX - rect.left,
+                    y: event.clientY - rect.top
+                };
+            };
+            
+            const startDrawing = (e) => {
+                e.preventDefault();
+                state.shouldDraw = true;
+                const { x, y } = getMousePos(e);
+                state.startX = x;
+                state.startY = y;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+
+                // For pencil/eraser, we need to save state before drawing starts
+                if(state.activeTool === 'PENCIL' || state.activeTool === 'ERASER') {
+                   // A new path starts, so we don't restore previous state
+                } else {
+                    restoreState(); // Restore for shape previews
+                }
+            };
+
+            const draw = (e) => {
+                if (!state.shouldDraw) return;
+                e.preventDefault();
+                const { x, y } = getMousePos(e);
+                const currentToolSettings = state.tools[state.activeTool];
+                ctx.strokeStyle = currentToolSettings.color;
+                ctx.lineWidth = currentToolSettings.size;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                if (state.activeTool === 'ERASER') {
+                   ctx.strokeStyle = state.currentTheme === 'dark' ? '#262626' : '#fff';
+                }
+
+                if (state.activeTool === 'PENCIL' || state.activeTool === 'ERASER') {
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                } else {
+                    restoreState(); // Redraw previous state to show live preview of shapes
+                    ctx.beginPath();
+                    switch (state.activeTool) {
+                        case 'LINE':
+                            ctx.moveTo(state.startX, state.startY);
+                            ctx.lineTo(x, y);
+                            break;
+                        case 'RECTANGLE':
+                            ctx.rect(state.startX, state.startY, x - state.startX, y - state.startY);
+                            break;
+                        case 'ELLIPSE':
+                            ctx.ellipse(state.startX, state.startY, Math.abs(x - state.startX), Math.abs(y - state.startY), 0, 0, 2 * Math.PI);
+                            break;
+                        case 'DIAMOND':
+                            const width = x - state.startX;
+                            const height = y - state.startY;
+                            ctx.moveTo(state.startX + width / 2, state.startY);
+                            ctx.lineTo(state.startX, state.startY + height / 2);
+                            ctx.lineTo(state.startX + width / 2, state.startY + height);
+                            ctx.lineTo(state.startX + width, state.startY + height / 2);
+                            ctx.closePath();
+                            break;
+                    }
+                    ctx.stroke();
+                }
+            };
+
+            const stopDrawing = () => {
+                if (!state.shouldDraw) return;
+                state.shouldDraw = false;
+                ctx.closePath();
+                saveState();
+            };
+
+            // --- UI Handlers ---
+            const updateActiveToolUI = () => {
+                toolButtons.forEach(btn => {
+                    if (btn.dataset.tool === state.activeTool) {
+                        btn.classList.add('active-tool');
+                    } else {
+                        btn.classList.remove('active-tool');
+                    }
+                });
+                const currentToolSettings = state.tools[state.activeTool];
+                widthSlider.value = currentToolSettings.size;
+                updateActiveColorUI(currentToolSettings.color);
+            };
+
+             const updateActiveColorUI = (selectedColor) => {
+                const colors = colorPalette.querySelectorAll('[data-color]');
+                colors.forEach(colorDiv => {
+                    if (colorDiv.dataset.color === selectedColor) {
+                        colorDiv.classList.add('ring');
+                    } else {
+                        colorDiv.classList.remove('ring');
+                    }
+                });
+            };
+
+            toolButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.activeTool = btn.dataset.tool;
+                    updateActiveToolUI();
+                });
+            });
+
+            actionButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const action = btn.dataset.action;
+                    switch(action) {
+                        case 'UNDO':
+                            if (state.historyPosition > 0) {
+                                state.historyPosition--;
+                                restoreState();
+                            }
+                            break;
+                        case 'REDO':
+                            if (state.historyPosition < state.canvasHistory.length - 1) {
+                                state.historyPosition++;
+                                restoreState();
+                            }
+                            break;
+                        case 'CLEAR':
+                            initializeCanvas();
+                            break;
+                        case 'DOWNLOAD':
+                            const tempCanvas = document.createElement('canvas');
+                            const tempCtx = tempCanvas.getContext('2d');
+                            tempCanvas.width = canvas.width;
+                            tempCanvas.height = canvas.height;
+                            tempCtx.fillStyle = state.currentTheme === 'dark' ? '#262626' : '#fff';
+                            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                            tempCtx.drawImage(canvas, 0, 0);
+
+                            const link = document.createElement('a');
+                            link.href = tempCanvas.toDataURL('image/jpeg');
+                            link.download = `Skribbl-${Date.now()}.jpg`;
+                            link.click();
+                            break;
+                    }
+                });
+            });
+
+            colorPalette.addEventListener('click', (e) => {
+                if (e.target.dataset.color) {
+                    const newColor = e.target.dataset.color;
+                    state.tools[state.activeTool].color = newColor;
+                    updateActiveColorUI(newColor);
+                }
+            });
+
+            widthSlider.addEventListener('input', (e) => {
+                state.tools[state.activeTool].size = parseInt(e.target.value, 10);
+            });
+
+            // --- Theme Logic ---
+            const applyTheme = (theme) => {
+                if (theme === 'system') {
+                    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    theme = systemPrefersDark ? 'dark' : 'light';
+                }
+                state.currentTheme = theme;
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+                // Update eraser and canvas background color
+                state.tools.ERASER.color = theme === 'dark' ? '#262626' : '#fff';
+            };
+
+            const setTheme = (theme) => {
+                localStorage.setItem('skribbl-theme', theme);
+                applyTheme(theme);
+            };
+
+            lightThemeBtn.addEventListener('click', () => setTheme('light'));
+            darkThemeBtn.addEventListener('click', () => setTheme('dark'));
+            systemThemeBtn.addEventListener('click', () => setTheme('system'));
+
+
+            // --- Event Listeners ---
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            canvas.addEventListener('touchstart', startDrawing);
+            canvas.addEventListener('touchmove', draw);
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            window.addEventListener('resize', initializeCanvas);
+
+            // --- Initial Setup ---
+            const savedTheme = localStorage.getItem('skribbl-theme') || 'dark';
+            applyTheme(savedTheme);
+            initializeCanvas();
+            updateActiveToolUI();
+        });
+    </script>
+</body>
+</html>
