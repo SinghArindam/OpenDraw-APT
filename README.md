@@ -31,6 +31,12 @@
 > Trying to make a clone of Excalidraw but in my style and for my use case.
 
 
+![grid_light](assets/grid_light.png)
+![grid_dark](assets/grid_dark.png)
+![plain_light](assets/plain_light.png)
+![plain_dark](assets/plain_dark.png)
+
+
 
 ## 📑 Table of Contents
 - [About the Project](#-about-the-project)  
