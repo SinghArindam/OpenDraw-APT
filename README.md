@@ -1,6 +1,6 @@
-<p align="center">
+<!-- <p align="center">
   <img src="https://via.placeholder.com/900x200.png?text=OpenDraw-Apt+-+Sketchy+Whiteboard" alt="OpenDraw-Apt Banner"/>
-</p>
+</p> -->
 
 <h1 align="center">OpenDraw-Apt</h1>
 <h3 align="center">
