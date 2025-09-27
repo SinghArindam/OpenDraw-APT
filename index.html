@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excalidraw Clone</title>
+    <title>OpenDraw-Apt</title>
     <style>
         :root {
             --app-bg: #f5f5f5;
@@ -744,7 +744,7 @@
                 const dataURL = off.toDataURL(mime, quality);
                 const link = document.createElement('a');
                 const ts = new Date().toISOString().replace(/[:.]/g, '-');
-                link.download = `excalidraw-clone-${ts}.${mime === 'image/jpeg' ? 'jpg' : 'png'}`;
+                link.download = `OpenDraw-Apt-${ts}.${mime === 'image/jpeg' ? 'jpg' : 'png'}`;
                 link.href = dataURL;
                 link.click();
             }
@@ -768,7 +768,7 @@
                 const a = document.createElement('a');
                 const ts = new Date().toISOString().replace(/[:.]/g, '-');
                 a.href = url;
-                a.download = `excalidraw-clone-${ts}.json`;
+                a.download = `OpenDraw-Apt-${ts}.json`;
                 a.click();
                 URL.revokeObjectURL(url);
             }
