@@ -144,6 +144,37 @@
             color: var(--ink);
             transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
         }
+        /* Mobile/touch optimizations */
+        #canvas-container,
+        #drawing-canvas {
+            touch-action: none; /* prevent scroll/zoom during drawing */
+            -ms-touch-action: none;
+        }
+
+        @media (max-width: 680px) {
+            #toolbar {
+                left: 8px;
+                right: 8px;
+                transform: none;
+                top: auto;
+                bottom: 16px; /* keep accessible near thumbs */
+                overflow-x: auto;
+                padding: 6px;
+                gap: 4px;
+            }
+            .tool-btn {
+                padding: 8px 10px; /* larger touch targets */
+            }
+            #zoom-controls {
+                left: 8px;
+                bottom: 72px; /* avoid overlapping toolbar */
+            }
+            .zoom-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -961,6 +992,10 @@
             // Event Handlers
             function handleMouseDown(e) {
                 e.preventDefault();
+                // Capture pointer so drawing continues even if it leaves the canvas
+                if (e && e.pointerId !== undefined && canvas.setPointerCapture) {
+                    try { canvas.setPointerCapture(e.pointerId); } catch {}
+                }
                 
                 const { x, y } = getCanvasCoordinates(e.clientX, e.clientY);
                 
@@ -1087,7 +1122,11 @@
                 }
             }
             
-            function handleMouseUp() {
+            function handleMouseUp(e) {
+                // Release pointer capture if any
+                if (e && e.pointerId !== undefined && canvas.releasePointerCapture) {
+                    try { canvas.releasePointerCapture(e.pointerId); } catch {}
+                }
                 if (isDrawing && currentElement) {
                     // Add the completed element to the elements array
                     if (currentElement.type !== 'text') { // Don't add text on mouse up (it's added on mouse down)
@@ -1364,12 +1403,12 @@
                     });
                 }
                 
-                // Canvas events
-                canvas.addEventListener('mousedown', handleMouseDown);
-                canvas.addEventListener('mousemove', handleMouseMove);
-                canvas.addEventListener('mouseup', handleMouseUp);
-                canvas.addEventListener('mouseleave', handleMouseUp);
-                canvas.addEventListener('wheel', handleWheel);
+                // Canvas events (Pointer Events for mouse + touch + pen)
+                canvas.addEventListener('pointerdown', handleMouseDown);
+                canvas.addEventListener('pointermove', handleMouseMove);
+                canvas.addEventListener('pointerup', handleMouseUp);
+                canvas.addEventListener('pointercancel', handleMouseUp);
+                canvas.addEventListener('wheel', handleWheel, { passive: false });
                 
                 // Prevent context menu on right-click
                 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
