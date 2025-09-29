@@ -5,7 +5,7 @@
 <h1 align="center">OpenDraw-APT</h1>
 <h3 align="center">
   (<a href="https://github.com/SinghArindam/OpenDraw-APT" target="_blank">GitHub</a> | 
-  <a href="https://singharindam.github.io/OpenDraw-APT/index.html" target="_blank">Demo</a>)
+  <a href="https://singharindam.github.io/OpenDraw-APT/" target="_blank">Demo</a>)
 </h3>
 <p align="center">
   <em>A lightweight, offline-first, sketchy diagramming app inspired by Excalidraw</em>
