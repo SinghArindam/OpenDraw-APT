@@ -448,6 +448,15 @@
                 return getComputedStyle(document.body).getPropertyValue(name).trim();
             }
 
+            // Resolve stroke/fill color based on theme so that pure black becomes white in dark mode.
+            // Other colors remain unchanged.
+            function resolveColorForTheme(rawColor, fallback) {
+                const c = (rawColor || fallback || '#000').toLowerCase();
+                const isDark = document.body.classList.contains('dark');
+                if (isDark && (c === '#000000' || c === '#000' || c === 'black')) return '#ffffff';
+                return c;
+            }
+
             // Subtle infinite grid (world-space)
             function drawGrid() {
                 const spacing = 40; // world units
@@ -491,7 +500,7 @@
                 const ny2 = Math.max(y1, y2);
                 const width = nx2 - nx1;
                 const height = ny2 - ny1;
-                const stroke = color || fallbackColor || '#000';
+                const stroke = resolveColorForTheme(color, fallbackColor);
                 const common = { stroke, strokeWidth: 2/scale, roughness: 1.15, bowing: 1.1 };
                 // If Rough.js not available, fallback to canvas API
                 if (!rcInstance) {
@@ -601,9 +610,9 @@
                 const { type, x1, y1, x2, y2, color, points } = element;
                 const width = x2 - x1;
                 const height = y2 - y1;
-
-                tctx.strokeStyle = color || currentColor;
-                tctx.fillStyle = color || currentColor;
+                const stroke = resolveColorForTheme(color, currentColor);
+                tctx.strokeStyle = stroke;
+                tctx.fillStyle = stroke;
                 tctx.lineWidth = 2 / scaleForStroke;
 
                 switch (type) {
