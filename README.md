@@ -263,45 +263,45 @@ If you discover a vulnerability, please **report privately** (e.g., email) inste
 * UI polish & accessibility tweaks
 * Documentation overhaul
 
-### v1.6 — 2025-08-10
+### v1.6 — 2025-09-27
 
 * Added Save/Load as JSON
 * Introduced bottom-left zoom pill with zoom level
 * Persisted viewport in snapshots
 * Performance tuning for grid rendering
 
-### v1.5 — 2025-07-01
+### v1.5 — 2025-09-17
 
 * Added PNG export
 * Color palette quick-swatches
 * Improved hit-testing
 * Minor toolbar refinements
 
-### v1.4 — 2025-06-10
+### v1.4 — 2025-09-17
 
 * Theme toggle (light/dark)
 * Consistent CSS variables
 * Shadow and border design system
 
-### v1.3 — 2025-05-20
+### v1.3 — 2025-09-16
 
 * Added Ellipse and Diamond tools
 * Upgraded Rough.js
 * Improved stroke scaling at zoom levels
 
-### v1.2 — 2025-04-28
+### v1.2 — 2025-09-15
 
 * Arrow and Line tools
 * Basic selection visuals
 * Grid toggle
 
-### v1.1 — 2025-04-10
+### v1.1 — 2025-09-14
 
 * Free Draw (pencil) & Text tool
 * Toolbar hotkeys
 * Clear canvas action
 
-### v1.0 — 2025-03-18
+### v1.0 — 2025-09-13
 
 * Initial release: canvas foundation, pan/zoom, Rectangle tool, basic undo/redo
 
