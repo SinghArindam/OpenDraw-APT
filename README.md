@@ -1,25 +1,25 @@
 <!-- <p align="center">
-  <img src="https://via.placeholder.com/900x200.png?text=OpenDraw-Apt+-+Sketchy+Whiteboard" alt="OpenDraw-Apt Banner"/>
+  <img src="https://via.placeholder.com/900x200.png?text=OpenDraw-APT+-+Sketchy+Whiteboard" alt="OpenDraw-APT Banner"/>
 </p> -->
 
-<h1 align="center">OpenDraw-Apt</h1>
+<h1 align="center">OpenDraw-APT</h1>
 <h3 align="center">
-  (<a href="https://github.com/SinghArindam/OpenDraw-Apt" target="_blank">GitHub</a> | 
-  <a href="https://singharindam.github.io/OpenDraw-Apt/index.html" target="_blank">Demo</a>)
+  (<a href="https://github.com/SinghArindam/OpenDraw-APT" target="_blank">GitHub</a> | 
+  <a href="https://singharindam.github.io/OpenDraw-APT/index.html" target="_blank">Demo</a>)
 </h3>
 <p align="center">
   <em>A lightweight, offline-first, sketchy diagramming app inspired by Excalidraw</em>
 </p>
 
 <p align="center">
-  <a href="https://github.com/SinghArindam/OpenDraw-Apt/stargazers">
-    <img src="https://img.shields.io/github/stars/SinghArindam/OpenDraw-Apt?style=social" alt="Stars"/>
+  <a href="https://github.com/SinghArindam/OpenDraw-APT/stargazers">
+    <img src="https://img.shields.io/github/stars/SinghArindam/OpenDraw-APT?style=social" alt="Stars"/>
   </a>
-  <a href="https://github.com/SinghArindam/OpenDraw-Apt/network/members">
-    <img src="https://img.shields.io/github/forks/SinghArindam/OpenDraw-Apt?style=social" alt="Forks"/>
+  <a href="https://github.com/SinghArindam/OpenDraw-APT/network/members">
+    <img src="https://img.shields.io/github/forks/SinghArindam/OpenDraw-APT?style=social" alt="Forks"/>
   </a>
-  <a href="https://github.com/SinghArindam/OpenDraw-Apt">
-    <img src="https://img.shields.io/github/last-commit/SinghArindam/OpenDraw-Apt" alt="Last Commit"/>
+  <a href="https://github.com/SinghArindam/OpenDraw-APT">
+    <img src="https://img.shields.io/github/last-commit/SinghArindam/OpenDraw-APT" alt="Last Commit"/>
   </a>
   <img src="https://img.shields.io/badge/version-v1.7-orange" alt="Version"/>
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License"/>
@@ -59,7 +59,7 @@
 ---
 
 ## 📖 About the Project
-**OpenDraw-Apt** is a minimal, fast, and offline-capable canvas drawing app.  
+**OpenDraw-APT** is a minimal, fast, and offline-capable canvas drawing app.  
 It focuses on pragmatic diagramming with a **hand-drawn aesthetic**, keeping the code simple and dependency-light.  
 
 It’s ideal for:
@@ -97,7 +97,7 @@ The app is a **single-page static site**. Just open `index.html` and draw — no
 ---
 
 ## ⚙ Getting Started
-**OpenDraw-Apt** is a static web app — no backend, no build. You can run it directly.
+**OpenDraw-APT** is a static web app — no backend, no build. You can run it directly.
 
 ### Option A:  
 Double-click `index.html` to open in your browser.  
@@ -121,7 +121,7 @@ Then open [http://localhost:8080/index.html](http://localhost:8080/index.html)
 ## 📂 Project Structure
 
 ```
-OpenDraw-Apt/
+OpenDraw-APT/
  ├── index.html   # Entire app (styles, toolbar, canvas, logic)
  ├── README.md    # Primary README for GitHub
  └── LICENSE      # Apache 2.0
@@ -311,7 +311,7 @@ If you discover a vulnerability, please **report privately** (e.g., email) inste
 
 Maintainer: **Arindam Singh**
 
-* 🌐 [Project Repo](https://github.com/SinghArindam/OpenDraw-Apt)
-* 🐛 [Issues](https://github.com/SinghArindam/OpenDraw-Apt/issues)
+* 🌐 [Project Repo](https://github.com/SinghArindam/OpenDraw-APT)
+* 🐛 [Issues](https://github.com/SinghArindam/OpenDraw-APT/issues)
 
 ---
