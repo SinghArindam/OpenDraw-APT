@@ -280,7 +280,7 @@
         <button id="bl-redo" class="zoom-btn" title="Redo">↷</button>
     </div>
     <input type="file" id="load-file" accept="application/json" style="display:none" />
-    <script src="https://unpkg.com/roughjs@4.5.2/bundled/rough.umd.js"></script>
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1284,8 +1284,10 @@
                 });
 
                 // Undo/Redo buttons
-                document.getElementById('undo-btn').addEventListener('click', undo);
-                document.getElementById('redo-btn').addEventListener('click', redo);
+                const undoTop = document.getElementById('undo-btn');
+                const redoTop = document.getElementById('redo-btn');
+                if (undoTop) undoTop.addEventListener('click', undo);
+                if (redoTop) redoTop.addEventListener('click', redo);
 
                 // Bottom-left undo/redo mirrors
                 const blUndo = document.getElementById('bl-undo');
@@ -1294,13 +1296,16 @@
                 if (blRedo) blRedo.addEventListener('click', redo);
 
                 // Delete button
-                document.getElementById('delete-btn').addEventListener('click', () => {
-                    if (!selectedElements.length) return;
-                    elements = elements.filter(el => !selectedElements.includes(el));
-                    selectedElements = [];
-                    redrawCanvas();
-                    saveHistory();
-                });
+                const deleteBtn = document.getElementById('delete-btn');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', () => {
+                        if (!selectedElements.length) return;
+                        elements = elements.filter(el => !selectedElements.includes(el));
+                        selectedElements = [];
+                        redrawCanvas();
+                        saveHistory();
+                    });
+                }
 
                 // Keyboard shortcuts for undo/redo
                 document.addEventListener('keydown', (e) => {
